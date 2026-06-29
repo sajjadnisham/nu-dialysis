@@ -153,8 +153,21 @@
       if(!selectedDate||!selectedSlot) return;
       var months=['January','February','March','April','May','June','July','August','September','October','November','December'];
       var dateStr=months[selectedDate.getMonth()]+' '+selectedDate.getDate()+', '+selectedDate.getFullYear();
-      var msg='Hello, I would like to book a dialysis consultation slot at NU Hospitals Hulhumalé Dialysis Centre.%0ADate: '+encodeURIComponent(dateStr)+'%0ATime: '+encodeURIComponent(selectedSlot);
-      window.location.href='viber://chat?number=%2B9607757782&text='+msg;
+      var msg='Hello, I would like to book a dialysis consultation slot at NU Hospitals Hulhumale Dialysis Centre.\nDate: '+dateStr+'\nTime: '+selectedSlot;
+      var encoded = encodeURIComponent(msg);
+      var viberUrl = 'viber://chat?number=%2B9607757782&text=' + encoded;
+      // Try Viber deep link first, fallback to Viber web
+      var a = document.createElement('a');
+      a.href = viberUrl;
+      a.target = '_blank';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      // Also try web fallback after short delay
+      setTimeout(function(){
+        window.open('https://viber.me/+9607757782?text=' + encoded, '_blank');
+      }, 1500);
+      closeBooking();
     }
   </script>
 </body></html>
